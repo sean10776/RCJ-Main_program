@@ -1,21 +1,32 @@
 #include "lib/IMU.h"
 #include "lib/IR.h"
 #include "lib/Light.h"
+#include "lib/Motor.h"
 IMU cpx = IMU();
 Light li;
 IR ir;
+Motor motor;
 void setup() {
+  Serial.begin(115200);
+  pinMode(13, OUTPUT);
+  digitalWrite(13, HIGH);
   // put your setup code here, to run once:
-  if(!cpx.begin()){
-    cpx.Calibration();
+  motor.init();
+  if(!cpx.init()){
+    while(1){
+      digitalWrite(13, LOW);
+      delay(500);
+      digitalWrite(13, HIGH);
+      delay(500);
+    }
   }
-  cpx.getRVal();
   ir.init();
+  li.init();
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  cpx.getRVal();
-  ir.GetVal();
-  li.init();
+  //ir.GetVal(0,1);
+  li.SetVal();
+  li.Status();
+  Serial.flush();
 }

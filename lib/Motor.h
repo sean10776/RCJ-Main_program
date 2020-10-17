@@ -2,21 +2,22 @@
 #define MOTOR_H
 
 #include <Arduino.h>
+#include "IMU.h"
 /*-----------------------------------------------------*/
 class Motor{
 
 public:
 	void init();
-	void SetMotor(byte port, int speed);
+	void SetMotor(byte port, float speed);
 	void Motion(float x, float y);
 	void Stop(unsigned time = 1);
 	void Test();
 	void Test(int pwr);
 	void Test(unsigned time, int pwr);
 private:
-	byte Motor_D[4][2] = {{14, 2}, {15, 4}, {6, 16}, {8, 17}};
+	byte Motor_D[4][2] = {{14, 2}, {4, 15}, {16, 6}, {17, 8}};
 	byte PWM[4] = {3, 5, 7, 9};
-	
+	IMU imu;
 };
 /*-----------------------------------------------------*/
 
@@ -26,10 +27,12 @@ void Motor::init(){
 		pinMode(Motor_D[i][1], OUTPUT);
 		pinMode(PWM[i], OUTPUT);
 	}
+	Serial.print("Motor Initial Done");
 }
 
-void Motor::SetMotor(byte port, int speed){
+void Motor::SetMotor(byte port, float speed){
 	int16_t sp =  (speed / 100) * 255;
+	Serial.print(sp);
   if(sp > 0){
     digitalWrite(Motor_D[port - 1][0], HIGH);
     digitalWrite(Motor_D[port - 1][1], LOW);
@@ -43,10 +46,10 @@ void Motor::SetMotor(byte port, int speed){
   analogWrite(PWM[port - 1], abs(sp));
 }
 
-void Motor::Motion(float x, float y){
+void Motor::Motion(float px, float py){
 	int16_t p1, p2, p3, p4, p = 1, ts = 0, com;
 	uint8_t range = 90;
-	com = cpx.getVal();
+	com = 0;//imu.getVal();
 	if (com >= (360 - range)){
 		ts = (com - 360);
 		p = 1;
@@ -65,7 +68,7 @@ void Motor::Motion(float x, float y){
   }
 	else;
 	//------------------------------------//
-	angle = PI * ((com + 45) % 360 ) / 180;
+	float angle = PI * ((com + 45) % 360 ) / 180;
 	p1 = p3 = int(-1 * (p * (px * cos(angle) - py * sin(angle))));
 	p2 = p4 = int(p * (py * cos(angle) + px * sin(angle)));
 	//------------------------------------//

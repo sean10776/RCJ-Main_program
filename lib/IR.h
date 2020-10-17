@@ -60,7 +60,7 @@ int IR::GetVal(int *port, bool offset, bool dis){
 	}
 	
 	if(dis){
-		uint8_t sum = 0;
+		uint32_t sum = 0;
 		for (int i = 0;i < 10; i++){
 			sum += width[i];
 			Serial.printf("%d = %4d", i, width[i]);

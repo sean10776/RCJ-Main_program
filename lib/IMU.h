@@ -15,7 +15,7 @@ class IMU : public Adafruit_BNO055{
 
 public:
 	IMU() : Adafruit_BNO055(55){}
-	bool begin(adafruit_bno055_opmode_t mode = OPERATION_MODE_IMUPLUS){
+	bool init(adafruit_bno055_opmode_t mode = OPERATION_MODE_IMUPLUS){
 		_mode = mode; 
 		return begin(mode);
 	}

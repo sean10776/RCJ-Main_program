@@ -9,6 +9,7 @@ public:
 	void init();
 	int ReadVal(byte i){return analogRead(Light_Pin[i]);}
 	void SetVal(int *port = NULL);
+	void Status();
 	void GetRVal(int *port);
 	bool GetDVal(bool *port, bool dis = false);
 	float LCos[10], LSin[10];
@@ -20,9 +21,8 @@ private:
 /*-----------------------------------------------------*/
 
 void Light::init(){
-	memset(Light_Max, 0, sizeof(Light_Max));
-	memset(Light_Min, 0, sizeof(Light_Min));
 	for(int i = 0; i < 10;i++){
+		Light_Min[i] = 1024;Light_Max[i] = 0;
 		pinMode(Light_Pin[i], INPUT);
 		float deg = ((int(10 - i) * 36 + 270) % 360) * PI / 180;
 		LCos[i] = cos(deg); LSin[i] = sin(deg);
@@ -34,8 +34,15 @@ void Light::SetVal(int *port){
 		int val = ReadVal(i);
 		Light_Max[i] = max(Light_Max[i], val);
 		Light_Min[i] = min(Light_Min[i], val);
-		*(port + i) = Light_Mid[i] = (Light_Min[i]*(100-Light_Per) + Light_Max[i]*Light_Per)/100;
-		
+		Light_Mid[i] = (Light_Min[i]*(100-Light_Per) + Light_Max[i]*Light_Per)/100;
+		if(port)*(port + i) = Light_Mid[i];
+	}
+}
+
+void Light::Status(){
+	Serial.println("Port\t Min\t Mid\t Max\t Raw");
+	for(int i = 0; i < 10;i++){
+		Serial.printf("%4d\t%4d\t%4d\t%4d\t%4d\n", i, Light_Min[i], Light_Mid[i], Light_Max[i], ReadVal(i));
 	}
 }
 
