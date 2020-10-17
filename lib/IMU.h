@@ -12,7 +12,16 @@
 
 /*-----------------------------------------------------*/
 class IMU : public Adafruit_BNO055{
-
+/****************************
+init() : 初始化Compass
+getRVal() : 取x軸raw值
+getVal() : 取當前goal值
+getForward() : 取Forward值
+setForward(uint16_t Forward值): 設定Forward
+Calibration() : 校正Compass
+DisplayCalStatus() : 顯示Compass校正狀態
+DisplaySensorOffsets() : 顯示Compass Offset值
+****************************/
 public:
 	IMU() : Adafruit_BNO055(55){}
 	bool init(adafruit_bno055_opmode_t mode = OPERATION_MODE_IMUPLUS){

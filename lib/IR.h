@@ -8,7 +8,12 @@
 #endif
 /*-----------------------------------------------------*/
 class IR{
-	
+/**********************	
+init() : 初始化IR
+GetVal(bool 校正(預設true),bool 顯示(預設false)) : 回傳IR值(0～360)
+GetVal(int 外部取值變數, bool 校正,bool 顯示) : 回傳IR值(0～360)
+Set_offset(int 校正值) : 設定校正值
+**********************/
 public:
 	void init();
 	int GetVal(bool offset = true, bool dis = false);

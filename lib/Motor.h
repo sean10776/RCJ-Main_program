@@ -5,7 +5,13 @@
 #include "IMU.h"
 /*-----------------------------------------------------*/
 class Motor{
-
+/*********************************
+init() : 初始化馬達
+SetMotor(byte 號碼(1～4), float 速度(-100～100))  : 控制單顆馬達轉速
+Motion(float x分量, float y分量) : 控制車體移動方向
+Stop(unsigned 時間(預設1)) : 停止
+Test() : 測試馬達轉向
+*********************************/
 public:
 	void init();
 	void SetMotor(byte port, float speed);

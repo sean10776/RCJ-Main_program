@@ -4,7 +4,16 @@
 #include <Arduino.h>
 /*-----------------------------------------------------*/
 class Light{
-
+/****************************
+init() : 初始化光感
+ReadVal(byte 光感號碼(0～9)) : 回傳光感值
+SetVal(int *外部取值變數(預設NULL)):設定光值
+Satus():顯示設定的光值
+GetRVal(int *外部取值變數):讀取Raw值
+GetDVal(bool *外部取值變數,bool 顯示(預設false)) : 讀取過半的True False值
+LCos[光感號碼] : 對應cos值
+LSin[光感號碼] : 對應sin值
+****************************/
 public:
 	void init();
 	int ReadVal(byte i){return analogRead(Light_Pin[i]);}
