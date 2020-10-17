@@ -10,6 +10,7 @@
 #include <Adafruit_BNO055.h>
 #include <utility/imumaths.h>
 
+uint16_t _Forward;
 /*-----------------------------------------------------*/
 class IMU : public Adafruit_BNO055{
 /****************************
@@ -35,11 +36,13 @@ public:
 	void Calibration(void);
 	void DisplayCalStatus();
 	void DisplaySensorOffsets(const adafruit_bno055_offsets_t);
+	
 private:
-	uint16_t _Forward;
 	adafruit_bno055_opmode_t _mode;
 };
 /*-----------------------------------------------------*/
+
+//static uint16_t IMU::_Forward = 0;
 
 int IMU::getRVal(){
 	return getVector(VECTOR_EULER).x();
