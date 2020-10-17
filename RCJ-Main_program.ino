@@ -22,6 +22,7 @@ void setup() {
   }
   ir.init();
   li.init();
+  cpx.setForward(cpx.getRVal());
 }
 
 void loop() {
