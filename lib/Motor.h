@@ -21,7 +21,7 @@ public:
 	void Test(int pwr);
 	void Test(unsigned time, int pwr);
 private:
-	byte Motor_D[4][2] = {{14, 2}, {4, 15}, {16, 6}, {17, 8}};
+	byte Motor_D[4][2] = {{2, 14}, {4, 15}, {6, 16}, {17, 8}};
 	byte PWM[4] = {3, 5, 7, 9};
 	IMU imu;
 };
@@ -38,7 +38,6 @@ void Motor::init(){
 
 void Motor::SetMotor(byte port, float speed){
 	int16_t sp =  (speed / 100) * 255;
-	Serial.print(sp);
   if(sp > 0){
     digitalWrite(Motor_D[port - 1][0], HIGH);
     digitalWrite(Motor_D[port - 1][1], LOW);
@@ -55,7 +54,7 @@ void Motor::SetMotor(byte port, float speed){
 void Motor::Motion(float px, float py){
 	int16_t p1, p2, p3, p4, p = 1, ts = 0, com;
 	uint8_t range = 90;
-	com = 0;//imu.getVal();
+	com = imu.getVal();
 	if (com >= (360 - range)){
 		ts = (com - 360);
 		p = 1;

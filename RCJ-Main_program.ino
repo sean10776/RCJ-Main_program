@@ -1,11 +1,13 @@
 #include "lib/Robot.h"
 Robot Attack;
-IMU cpx;
 void setup() {
   Attack.init();
   Attack.SetForward();
+  Serial.println("Start!!");
+  delay(1000);
 }
 
 void loop() {
+  Attack.Searching();
   Serial.flush();
 }

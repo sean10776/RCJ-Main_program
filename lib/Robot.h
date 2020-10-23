@@ -12,7 +12,11 @@
 class Robot{
 public:
 	void init();
-	void SetForward(){cpx.setForward(cpx.getRVal());}
+	void SetForward(){
+		for(byte i = 0; i < 3;i++){
+			cpx.setForward(cpx.getRVal());
+		}
+	}
 	void Searching();
 	
 private:
@@ -21,6 +25,8 @@ private:
 	IMU cpx;
 	Light light;
 	IR ir;
+	bool debug = true;
+	int maxspeed = 20;
 };
 
 void Robot::init(){
@@ -41,6 +47,23 @@ void Robot::Error(){
 		delay(300);
 		digitalWrite(LED, HIGH);
 		delay(300);
+	}
+}
+
+void Robot::Searching(){
+	float x, y, ratio, x_range = 0.3;
+	bool Ball = ir.GetVector(x, y, ratio, debug);
+	if(Ball){
+		if(abs(x) < x_range * (1 / ratio) and y > 0){
+			motor.Motion( 0, maxspeed);
+		}
+		else{
+			x = 0.2 * (y / x) * maxspeed; y = -1 * (abs(x) / sqrt(x*x + y*y)) * maxspeed;
+			motor.Motion(x, y);
+		}
+	}
+	else{
+		motor.Motion(0, 0);
 	}
 }
 #endif
