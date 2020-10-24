@@ -17,6 +17,7 @@ Set_offset(int 校正值) : 設定校正值
 **********************/
 public:
 	void init();
+	int GetVal(bool offset = true, bool dis = false);
 	int GetVal(float &str, bool offset = true, bool dis = false);
 	int GetVal(float &str, int *port, bool offset, bool dis);
 	bool GetVector(float &x, float &y, float &str, bool dis = false);
@@ -36,6 +37,11 @@ void IR::init(){
 		Sin[i] = sin(Deg[i] * PI / 180);
 	}
 	_offset = 90;
+}
+
+int IR::GetVal(bool offset, bool dis){
+	float str;
+	return GetVal(str, NULL, offset, dis);
 }
 
 int IR::GetVal(float &str, bool offset, bool dis){
