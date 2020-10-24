@@ -26,7 +26,7 @@ private:
 	Light light;
 	IR ir;
 	bool debug = true;
-	int maxspeed = 20;
+	int maxspeed = 40;
 };
 
 void Robot::init(){
@@ -51,14 +51,15 @@ void Robot::Error(){
 }
 
 void Robot::Searching(){
-	float x, y, ratio, x_range = 0.3;
+	float x, y, ratio, x_range = 0.23;
 	bool Ball = ir.GetVector(x, y, ratio, debug);
 	if(Ball){
-		if(abs(x) < x_range * (1 / ratio) and y > 0){
-			motor.Motion( 0, maxspeed);
+		if(abs(x) < cos(60 * PI / 180) and y > 0){
+			if(abs(x) < x_range) motor.Motion( 0, maxspeed);
+			else motor.Motion(maxspeed * x * (1 + x_range), maxspeed * y);
 		}
 		else{
-			x = 0.2 * (y / x) * maxspeed; y = -1 * (abs(x) / sqrt(x*x + y*y)) * maxspeed;
+			x = 0.25 * (y / x) * maxspeed; y = -1 * (abs(x) / sqrt(x*x + y*y)) * maxspeed;
 			motor.Motion(x, y);
 		}
 	}

@@ -101,10 +101,9 @@ bool IR::GetVector(float &x, float &y,float &ratio, bool dis){
 			tx += width[i] * Cos[i];
 			ty += width[i] * Sin[i];
 		}
-		sum = sqrt(tx*tx + ty * ty);
-		if(_max < sum)_max = sum;
+		sum = sqrt((tx * tx) + (ty * ty));
 		x = tx / sum; y = ty / sum;
-		ratio = sum / _max;
+		ratio = sum;
 		if(dis) Serial.print(String("x: ") + x + "y: "+ y + "\nratio: " + ratio +"\n");
 		return true;
 	}
