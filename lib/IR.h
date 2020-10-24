@@ -10,15 +10,15 @@
 class IR{
 /**********************	
 init() : 初始化IR
-GetVal(bool 校正(預設true),bool 顯示(預設false)) : 回傳IR值(0～360)
-GetVal(int 外部取值變數, bool 校正,bool 顯示) : 回傳IR值(0～360)
+GetVal(float 外部取值(強度), bool 校正(預設true),bool 顯示(預設false)) : 回傳IR值(0～360)
+GetVal(float 外部取值(強度), int 外部取值變數, bool 校正,bool 顯示) : 回傳IR值(0～360)
 GetVector(float 外部取值(x軸), float 外部取值(y軸)) : 回傳ture有球，false則無
 Set_offset(int 校正值) : 設定校正值
 **********************/
 public:
 	void init();
-	int GetVal(bool offset = true, bool dis = false);
-	int GetVal(int *port, bool offset, bool dis);
+	int GetVal(float &str, bool offset = true, bool dis = false);
+	int GetVal(float &str, int *port, bool offset, bool dis);
 	bool GetVector(float &x, float &y, float &str, bool dis = false);
 	void Set_offset(int offset){_offset = offset;}
 private:
@@ -38,11 +38,11 @@ void IR::init(){
 	_offset = 90;
 }
 
-int IR::GetVal(bool offset, bool dis){
-	return GetVal(NULL, offset, dis);
+int IR::GetVal(float &str, bool offset, bool dis){
+	return GetVal(str, NULL, offset, dis);
 }
 
-int IR::GetVal(int *port, bool offset, bool dis){
+int IR::GetVal(float &str, int *port, bool offset, bool dis){
 	int width[10] = {0}, counter = 0;
 	for(uint8_t i = 0; i < 5;i++){
 		unsigned long timer = micros();
@@ -63,6 +63,7 @@ int IR::GetVal(int *port, bool offset, bool dis){
 			y += width[i] * Sin[i];
 			deg = int(atan2(y, x) * 180 / PI + 360) % 360;
 		}
+		str = sqrt(x * x + y * y);
 		if(60 < deg && deg < 140 && offset) deg = deg - (_offset - 90);
 	}
 	
