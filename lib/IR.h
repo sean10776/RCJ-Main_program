@@ -10,9 +10,10 @@
 class IR{
 /**********************	
 init() : 初始化IR
-GetVal(float 外部取值(強度), bool 校正(預設true),bool 顯示(預設false)) : 回傳IR值(0～360)
-GetVal(float 外部取值(強度), int 外部取值變數, bool 校正,bool 顯示) : 回傳IR值(0～360)
-GetVector(float 外部取值(x軸), float 外部取值(y軸)) : 回傳ture有球，false則無
+*--GetVal(bool 校正(預設true),bool 顯示(預設false)) : 回傳IR值(0～360)
+*  GetVal(float 外部取值(強度), bool 校正(預設true),bool 顯示(預設false)) : 回傳IR值(0～360)
+*--GetVal(float 外部取值(強度), int 外部取值變數, bool 校正,bool 顯示) : 回傳IR值(0～360)
+GetVector(float 外部取值(x軸), float 外部取值(y軸), bool 顯示(預設false)) : 回傳ture有球，false則無
 Set_offset(int 校正值) : 設定校正值
 **********************/
 public:

@@ -24,8 +24,8 @@ public:
 	float LCos[10], LSin[10];
 private:
 	byte Light_Pin[10] = {A14, A15, A16, A17, A21, A22, A6, A7, A8, A9};
-	int Light_Max[10], Light_Mid[10], Light_Min[10];
-	int Light_Per = 60;
+	uint16_t Light_Max[10], Light_Mid[10], Light_Min[10];
+	int Light_Per = 50, shift = 18;
 };
 /*-----------------------------------------------------*/
 
@@ -33,9 +33,10 @@ void Light::init(){
 	for(int i = 0; i < 10;i++){
 		Light_Min[i] = 1024;Light_Max[i] = 0;
 		pinMode(Light_Pin[i], INPUT);
-		float deg = ((int(10 - i) * 36 + 270) % 360) * PI / 180;
+		float deg = ((int(10 - i) * 36 + shift + 270) % 360) * PI / 180;
 		LCos[i] = cos(deg); LSin[i] = sin(deg);
 	}
+	delay(100);
 }
 
 void Light::SetVal(int *port){
@@ -53,8 +54,9 @@ void Light::Status(){
 	for(int i = 0; i < 10;i++){
 		Serial.printf("%4d\t%4d\t%4d\t%4d\t%4d\n", i, Light_Min[i], Light_Mid[i], Light_Max[i], ReadVal(i));
 	}
+	Serial.flush();
 }
-
+
 void Light::GetRVal(int *port){
 	for(int i = 0;i < 10;i++){
 		*(port + i) = ReadVal(i);
@@ -74,4 +76,14 @@ bool Light::GetDVal(bool *port, bool dis){
   if(counter == 0)return false;
   return true;
 }
+/*
+unsigned int Light::GetBVal(bool dis){
+	int data = 0;
+	for(int i = 0; i < 10; i++) {
+		if (ReadVal(i) > Light_Mid[i]) {
+      if(dis) Serial.print(String(i) + "\t");
+      data = data | (1 << i);
+    }
+	}
+}*/
 #endif
