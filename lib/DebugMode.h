@@ -100,7 +100,7 @@ bool DebugMode::Debug(){
 				int lival[10] = {0};
 				_li->SetVal(lival);
 				for(int i = 0; i < 10; i++)
-					lidata += String("L") + i + "=" + lival[i];
+					lidata += String("L") + i + "=" + lival[i]+"\n";
 				sd.SDwrite("IR.txt", irdata);
 				sd.SDwrite("Light.txt",lidata);
 				sd.SDwrite("Camera.txt",camdata);
