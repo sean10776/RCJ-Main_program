@@ -3,10 +3,12 @@
 
 #include <Arduino.h>
 
+#include "Value.h"
 #include "Motor.h"
 #include "IMU.h"
 #include "Light.h"
 #include "IR.h"
+#include "DebugMode.h"
 #define LED 13
 
 class Robot{
@@ -20,15 +22,15 @@ public:
 	void Searching();
 	bool Border();
 	char key();
-	
+	/************/
 	Motor motor;
 	IMU cpx;
 	Light light;
 	IR ir;
+	DebugMode debugmode;
 private:
 	void Error();
 	bool debug = true;
-	int maxspeed = 20;
 	/*******************/
 	float A_Ldegree[10] = {90, 54, 18, 342, 306, 270, 234, 198, 162, 126};
 	float A_LCos[10], A_LSin[10];
@@ -38,6 +40,7 @@ void Robot::init(){
   Serial.begin(115200);
   pinMode(LED, OUTPUT);
   digitalWrite(LED, HIGH);
+	debugmode.init(debug, &ir, &light, NULL);
 	motor.init();
 	if(!cpx.init()){
 		Error();
@@ -69,7 +72,7 @@ void Robot::Error(){
 }
 
 void Robot::Searching(){
-	float x, y, ratio, x_range = 0.2, y_range = 0.77,  catch_deg = 45;
+	float x, y, ratio, y_range = 0.77/*, x_range = 0.2, catch_deg = 45*/;
 	bool Ball = ir.GetVector(x, y, ratio, debug);
 	if(Ball){
 		if( y > 0){

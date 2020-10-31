@@ -90,7 +90,6 @@ int IR::GetVal(float &str, int *port, bool offset, bool dis){
 
 bool IR::GetVector(float &x, float &y,float &ratio, bool dis){
 	int width[10] = {0}, sum, counter = 0;
-	static float _max;
 	for(uint8_t i = 0; i < 5;i++){
 		sum = 0, counter = 0;
 		unsigned long timer = micros();

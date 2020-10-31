@@ -2,6 +2,7 @@
 #define LIGHT_H
 
 #include <Arduino.h>
+
 /*-----------------------------------------------------*/
 class Light{
 /****************************
@@ -17,15 +18,16 @@ LSin[光感號碼] : 對應sin值
 public:
 	void init();
 	int ReadVal(byte i){return analogRead(Light_Pin[i]);}
-	void SetVal(int *port = NULL);
+	void SetVal(int *port = NULL, bool insert = false);
 	void Status();
+	void SetPer(int per){Light_Per = per;}
 	void GetRVal(int *port);
 	bool GetDVal(bool *port, bool dis = false);
 	float LCos[10], LSin[10];
 private:
 	byte Light_Pin[10] = {A14, A15, A16, A17, A21, A22, A6, A7, A8, A9};
+	int shift = 18;
 	uint16_t Light_Max[10], Light_Mid[10], Light_Min[10];
-	int Light_Per = 50, shift = 18;
 };
 /*-----------------------------------------------------*/
 
@@ -39,13 +41,20 @@ void Light::init(){
 	delay(100);
 }
 
-void Light::SetVal(int *port){
-	for(int i = 0; i < 10;i++){
-		int val = ReadVal(i);
-		Light_Max[i] = max(Light_Max[i], val);
-		Light_Min[i] = min(Light_Min[i], val);
-		Light_Mid[i] = (Light_Min[i]*(100-Light_Per) + Light_Max[i]*Light_Per)/100;
-		if(port)*(port + i) = Light_Mid[i];
+void Light::SetVal(int *port, bool insert){
+	if(insert){
+		for(int i= 0; i < 10; i++){
+			Light_Mid[i] = *(port + i);
+		}
+	}
+	else{
+		for(int i = 0; i < 10;i++){
+			int val = ReadVal(i);
+			Light_Max[i] = max(Light_Max[i], val);
+			Light_Min[i] = min(Light_Min[i], val);
+			Light_Mid[i] = (Light_Min[i]*(100-Light_Per) + Light_Max[i]*Light_Per)/100;
+			if(port)*(port + i) = Light_Mid[i];
+		}
 	}
 }
 

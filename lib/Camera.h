@@ -8,9 +8,9 @@ class Camera{
 public:
 	void init();
 	void init(int rate);
-	bool Uart_read(String &title, int &val);
 	int GetVal(float ratio, bool dis = false); 
 private:
+	bool Uart_read(String &title, int &val);
 };
 
 /*-----------------------------------------------------*/
@@ -42,7 +42,8 @@ bool Camera::Uart_read(String &title, int &val){
 int Camera::GetVal(float ratio, bool dis){
 	static int data[8] = {0}, Shift = 100;
 	String title = ""; int val = 0; bool change = false;
-	if(change = Uart_read(title, val)){
+	change = Uart_read(title, val);
+	if(change){
 		if(title[0] == 'f') data[title[1] - '0'] = val;
 		if(title[0] == 'b') data[title[1] - '0' + 3] = val;
 	}

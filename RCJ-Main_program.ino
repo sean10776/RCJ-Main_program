@@ -2,6 +2,7 @@
 Robot Attack;
 void setup() {
   Attack.init();
+  Attack.debugmode.Debug();
   Attack.SetForward();
   Serial.println("Start!!");
   while(Attack.key() == 'N'){
