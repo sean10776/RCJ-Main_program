@@ -2,19 +2,17 @@
 Robot Attack;
 void setup() {
   Attack.init();
-  Attack.debugmode.Debug();
-  Attack.SetForward();
   Serial.println("Start!!");
-  while(Attack.key() == 'N'){
-    Attack.light.SetVal();
-    Attack.light.Status();
-  }
+  Serial.begin(115200);
+  //Attack.debugmode.Debug();
+  Attack.SetForward();
+  pinMode(A19, OUTPUT);
 }
 
 void loop() {
-  //Attack.Searching();
-  if(!Attack.Border()){
+  Attack.Searching();/*
+  if(!Attack.Border() and false){
     Attack.Searching();
-  }
+  }*/
   Serial.flush();
 }

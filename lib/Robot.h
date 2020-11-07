@@ -22,6 +22,7 @@ public:
 	void Searching();
 	bool Border();
 	char key();
+	void Kicker(uint16_t, uint16_t);
 	/************/
 	Motor motor;
 	IMU cpx;
@@ -29,8 +30,9 @@ public:
 	IR ir;
 	DebugMode debugmode;
 private:
+	byte Kick_Pin = A19;
 	void Error();
-	bool debug = true;
+	bool debug = false;
 	/*******************/
 	float A_Ldegree[10] = {90, 54, 18, 342, 306, 270, 234, 198, 162, 126};
 	float A_LCos[10], A_LSin[10];
@@ -39,6 +41,7 @@ private:
 void Robot::init(){
   Serial.begin(115200);
   pinMode(LED, OUTPUT);
+	pinMode(Kick_Pin, OUTPUT);
   digitalWrite(LED, HIGH);
 	debugmode.init(debug, &ir, &light, NULL);
 	motor.init();
@@ -74,7 +77,12 @@ void Robot::Error(){
 void Robot::Searching(){
 	float x, y, ratio, y_range = 0.77/*, x_range = 0.2, catch_deg = 45*/;
 	bool Ball = ir.GetVector(x, y, ratio, debug);
+	static unsigned long timer = millis();
+	static bool Kicked = false;
 	if(Ball){
+		if((abs(x) < 0.15 and y >= 0.97 and millis() - timer > 300) or Kicked){
+			Kicked = Kicker(100, 5000);
+		}
 		if( y > 0){
 			if(y < y_range) motor.Motion(x * abs(3 - y) * maxspeed, -1 * y * maxspeed);
 			else motor.Motion( x * maxspeed, y * maxspeed);
@@ -175,5 +183,23 @@ bool Robot::Border(){
     return true;
   }
   return false;
+}
+
+void Robot::Kicker(uint16_t charge,uint16_t discharge){
+	static unsigned long timer = millis();
+	static bool kicked = false;
+	if(millis() - timer > discharge){
+		if(!kicked){
+			digitalWrite(Kick_Pin, HIGH);
+			kicked = true;
+		}
+		timer = millis();
+	}
+	if(kicked && millis() - timer > charge){
+		digitalWrite(Kick_Pin, LOW);
+		kicked = false;
+		timer = millis();
+	}
+	return kicked;
 }
 #endif
