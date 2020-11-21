@@ -7,10 +7,10 @@
  #include "WProgram.h"
 #endif
 #include <EEPROM.h>
+#include <Value.h>
 #include <Adafruit_BNO055.h>
 #include <utility/imumaths.h>
 
-uint16_t _Forward;
 /*-----------------------------------------------------*/
 class IMU : public Adafruit_BNO055{
 /****************************

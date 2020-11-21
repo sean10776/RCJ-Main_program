@@ -9,6 +9,11 @@
 #include "IR.h"
 
 class DebugMode{
+/*****************************
+void init(bool 決定是否連上ESP, IR 讀取ir物件, Light 讀取Light物件, Camera 讀取camera物件)：初始化
+bool Debug()：調整參數+讀取SD資料
+void SendData()：傳資訊給ESP
+*****************************/
 public:
 	void init(bool debug, IR *ir, Light *li, Camera *cam);
 	bool Debug();

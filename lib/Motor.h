@@ -7,10 +7,12 @@
 class Motor{
 /*********************************
 init() : 初始化馬達
-SetMotor(byte 號碼(1～4), float 速度(-100～100))  : 控制單顆馬達轉速
+SetMotor(byte 號碼(1～4), float 速度(-100～100)) : 控制單顆馬達轉速
 Motion(float x分量, float y分量) : 控制車體移動方向
 Stop(unsigned 時間(預設1)) : 停止
-Test() : 測試馬達轉向
+╔══Test() : 測試馬達轉向
+║  Test(int 測試馬力(-100～100)) : 測試馬達轉向
+╚══Test(unsigned 時間, int 測試馬力(-100～100)) : 測試馬達轉向
 *********************************/
 public:
 	void init();
@@ -21,7 +23,7 @@ public:
 	void Test(int pwr);
 	void Test(unsigned time, int pwr);
 private:
-	byte Motor_D[4][2] = {{2, 14}, {4, 15}, {6, 16}, {17, 8}};
+	byte Motor_D[4][2] = {{2, 14}, {15, 4}, {16, 6}, {17, 8}};
 	byte PWM[4] = {3, 5, 7, 9};
 	IMU imu;
 };
@@ -33,7 +35,6 @@ void Motor::init(){
 		pinMode(Motor_D[i][1], OUTPUT);
 		pinMode(PWM[i], OUTPUT);
 	}
-	Serial.print("Motor Initial Done");
 }
 
 void Motor::SetMotor(byte port, float speed){
@@ -90,7 +91,7 @@ void Motor::Stop(unsigned time){
 }
 
 void Motor::Test(){
-	Test(500, 30);
+	Test(500, 20);
 }
 
 void Motor::Test(int pwr){
