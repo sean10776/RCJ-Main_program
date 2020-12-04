@@ -6,8 +6,8 @@
 #else
  #include "WProgram.h"
 #endif
+#include "Value.h"
 #include <EEPROM.h>
-#include <Value.h>
 #include <Adafruit_BNO055.h>
 #include <utility/imumaths.h>
 

@@ -23,7 +23,7 @@ public:
 	void Test(int pwr);
 	void Test(unsigned time, int pwr);
 private:
-	byte Motor_D[4][2] = {{2, 14}, {15, 4}, {16, 6}, {17, 8}};
+	byte Motor_D[4][2] = {{2, 14}, {4, 15}, {6, 16}, {17, 8}};
 	byte PWM[4] = {3, 5, 7, 9};
 	IMU imu;
 };
